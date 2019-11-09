@@ -35,17 +35,6 @@ class Before {
 
 // -----------------------------------
 
-class After {
-
-    func populate(request: SomeUnMockableHttpRequest) {
-        let values = request.getValues()
-
-        if let values = values, !values.isEmpty {
-            //...
-        }
-    }
-}
-
 protocol SomeProtocol {
     func getValues() -> [String]?
 }
@@ -75,3 +64,18 @@ class ProductionSome: SomeProtocol {
         return self.request.getValues()
     }
 }
+
+class After {
+
+    func populate(some: SomeProtocol) {
+        let values = some.getValues()
+
+        if let values = values, !values.isEmpty {
+            //...
+        }
+    }
+}
+
+let after = After()
+let some = MockedSome(values: ["hoge"])
+after.populate(some: some)
